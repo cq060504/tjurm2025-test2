@@ -46,6 +46,26 @@ std::vector<cv::Mat> erode(const cv::Mat& src_erode, const cv::Mat& src_dilate) 
     cv::Mat dst_erode, dst_dilate;
 
     // TODO: 在这里实现你的代码
-
+    //创建保存灰度图像等的类
+    cv::Mat gray_image,gray_image1;
+    cv::Mat binary_image, binary_image1;
+    //转灰度，函数 cv::cvtColor(输入, 输出, 颜色码（转换成什么颜色）);（也可自己规定通道数，否则自动）
+    cv::cvtColor(src_erode, gray_image, cv::COLOR_BGR2GRAY);
+     cv::cvtColor(src_dilate, gray_image1, cv::COLOR_BGR2GRAY);
+    //二值化
+    cv::threshold(gray_image, binary_image, 50, 255, cv::THRESH_BINARY);
+     cv::threshold(gray_image1, binary_image1, 50, 255, cv::THRESH_BINARY);
+    //imshow(" ",binary_image);
+    //腐蚀与膨胀
+    //创建自定义核
+    cv::Mat kernel1 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(4, 4),cv::Point(1,1));
+    cv::Mat kernel2= cv::getStructuringElement(cv::MORPH_RECT,cv::Size(3,3),cv::Point(1,1));
+     cv::Mat kernel3= cv::getStructuringElement(cv::MORPH_RECT,cv::Size(2,2),cv::Point(1,1));
+    //腐蚀
+    cv::erode(binary_image, dst_erode,kernel2);
+    cv::erode(dst_erode, dst_erode,kernel2);
+    cv::erode(dst_erode, dst_erode,kernel2);
+    //膨胀
+    cv::dilate(binary_image1, dst_dilate, kernel1,cv::Point(-1,-1),4);
     return {dst_erode, dst_dilate};
 }

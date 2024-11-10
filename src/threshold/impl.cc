@@ -28,6 +28,7 @@ std::vector<cv::Mat> threshold(const cv::Mat& src, int threshold_value) {
     cv::Mat gray, dst;
 
     // TODO: 实现代码
-
+    cv::cvtColor(src,gray,cv::COLOR_BGR2GRAY);
+    cv::threshold(gray,dst,0,225,cv::THRESH_BINARY+cv::THRESH_OTSU);
     return {gray, dst};
 }
